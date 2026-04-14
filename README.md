@@ -2,58 +2,50 @@
 
 This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.2.7.
 
-## Development server
+## Ejecución entorno de desarrollo
 
-To start a local development server, run:
+Para ejecutar el proyecto ejecute:
 
 ```bash
 ng serve
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+## 🧠 Enfoque Reactivo con RxJS
 
-## Code scaffolding
+Se utiliza RxJS para combinar múltiples fuentes de datos y reaccionar automáticamente a cambios en la UI.
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+```ts
+private usersApi$: Observable<User[]> = this.userService.getUsers();
+private newUsers$ = new BehaviorSubject<User[]>([]);
+private search$ = new BehaviorSubject<string>('');
 
-```bash
-ng generate component component-name
+users$ = combineLatest([
+  this.usersApi$,
+  this.newUsers$,
+  this.search$
+]).pipe(
+  map(([apiUsers, newUsers, search]) => {
+
+    const allUsers = [...newUsers, ...apiUsers];
+
+    if (!search) return allUsers;
+
+    const term = search.toLowerCase();
+
+    return allUsers.filter(user =>
+      user.name.toLowerCase().includes(term) ||
+      user.email.toLowerCase().includes(term) ||
+      user.username.toLowerCase().includes(term)
+    );
+  })
+);
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+## 🔧 Inyección de dependencias
 
-```bash
-ng generate --help
+Se utiliza  `inject()` para obtener instancias de servicios sin necesidad de usar constructores.
+
+```ts
+private router = inject(Router);
+private userService = inject(UserService);
 ```
-
-## Building
-
-To build the project run:
-
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.

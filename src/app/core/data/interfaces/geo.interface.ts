@@ -1,4 +1,4 @@
-export interface GeoInterface {
+export interface Geo {
   lat: string;
   lng: string;
 }

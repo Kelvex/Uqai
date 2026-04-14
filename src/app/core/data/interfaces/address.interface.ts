@@ -1,9 +1,9 @@
-import { GeoInterface } from './geo.interface';
+import { Geo } from './geo.interface';
 
-export interface AddressInterface {
+export interface Address {
   street: string;
   suite: string;
   city: string;
   zipcode: string;
-  geo: GeoInterface;
+  geo: Geo;
 }

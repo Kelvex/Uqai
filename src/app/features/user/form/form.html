@@ -1,0 +1,105 @@
+<div class="bg-gray-100 p-6 max-h-screen flex items-center justify-center">
+
+  <div class="bg-transparent w-full max-w-3xl rounded-lg p-6">
+
+    <!-- TÍTULO -->
+    <h2 class="text-center text-xl font-semibold text-gray-700 mb-6">
+      Formulario de Registro
+    </h2>
+
+    <form [formGroup]="form" (ngSubmit)="onSubmit()" class="grid grid-cols-2 gap-4">
+
+      <!-- NOMBRE -->
+      <div>
+        <label class="block text-sm text-gray-600 mb-1">Nombre</label>
+        <input
+          type="text"
+          formControlName="name"
+          class="w-full border rounded px-3 py-2 text-sm focus:outline-none"
+          [ngClass]="{
+            'border-red-500': form.get('name')?.touched && form.get('name')?.invalid,
+            'border-gray-300': !form.get('name')?.invalid
+          }"
+        />
+        @if (form.get('name')?.touched && form.get('name')?.invalid){
+          <p class="text-red-500 text-xs mt-1">
+            Este campo es requerido
+          </p>
+        }
+      </div>
+
+      <!-- EMAIL -->
+      <div>
+        <label class="block text-sm text-gray-600 mb-1">Email</label>
+        <input
+          type="email"
+          formControlName="email"
+          class="w-full border rounded px-3 py-2 text-sm focus:outline-none"
+          [ngClass]="{
+            'border-red-500': form.get('email')?.touched && form.get('email')?.invalid,
+            'border-gray-300': !form.get('email')?.invalid
+          }"
+        />
+        @if (form.get('email')?.touched && form.get('email')?.invalid){
+          <p class="text-red-500 text-xs mt-1">
+            Email inválido
+          </p>
+        }
+      </div>
+
+      <!-- EMPRESA -->
+      <div>
+        <label class="block text-sm text-gray-600 mb-1">Empresa</label>
+        <input
+          type="text"
+          formControlName="company"
+          class="w-full border border-gray-300 rounded px-3 py-2 text-sm"
+        />
+      </div>
+
+      <!-- FECHA NACIMIENTO -->
+      <div>
+        <label class="block text-sm text-gray-600 mb-1">Fecha nacimiento</label>
+        <input
+          type="date"
+          formControlName="birthDate"
+          class="w-full border border-gray-300 rounded px-3 py-2 text-sm"
+        />
+      </div>
+
+      <!-- EDAD -->
+      <div class="col-span-2">
+        <label class="block text-sm text-gray-600 mb-1">Edad</label>
+        <input
+          type="text"
+          formControlName="age"
+          readonly
+          class="w-full border border-gray-200 bg-gray-100 rounded px-3 py-2 text-sm text-gray-500"
+        />
+      </div>
+
+      <!-- BOTONES -->
+      <div class="col-span-2 flex justify-center gap-4 mt-4">
+
+        <button
+          type="button"
+          (click)="form.reset()"
+          class="bg-gray-200 text-gray-700 px-6 py-2 rounded hover:bg-gray-300 text-sm"
+        >
+          Reiniciar
+        </button>
+
+        <button
+          type="submit"
+          [disabled]="form.invalid || loading"
+          class="bg-yellow-400 text-gray-800 px-6 py-2 rounded hover:bg-yellow-500 text-sm font-medium"
+        >
+          {{ loading ? 'Guardando...' : 'Enviar' }}
+        </button>
+
+      </div>
+
+    </form>
+
+  </div>
+</div>

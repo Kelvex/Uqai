@@ -1,1 +1,111 @@
-<p>user works!</p>
+<div class="min-h-screen bg-gray-100 p-6">
+
+  <!-- TÍTULO -->
+  <h1 class="text-center text-xl font-semibold text-gray-700 mb-6 tracking-wide">
+    USUARIOS
+  </h1>
+
+  <!-- CARD -->
+  <div class="bg-white rounded-xl shadow-md p-6">
+
+    <!-- TOP BAR -->
+    <div class="flex justify-between items-center mb-4">
+
+      <!-- SEARCH -->
+      <input
+        type="text"
+        #searchInput
+        placeholder="Search..."
+        (input)="onSearch(searchInput.value)"
+        class="border border-gray-200 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-400"
+      />
+
+      <!-- BOTÓN -->
+      <button
+        (click)="openModal()"
+        class="bg-yellow-500 text-white px-4 py-2 rounded-md text-sm hover:bg-yellow-600 transition hover:cursor-pointer"
+      >
+        + Nuevo
+      </button>
+    </div>
+
+    <!-- TABLA -->
+    <div class="overflow-x-auto">
+
+      <table class="min-w-full text-sm text-gray-600">
+
+        <!-- HEADER -->
+        <thead class="text-xs uppercase text-gray-500 border-b">
+        <tr>
+          <th class="py-3 px-4 text-left">ID</th>
+          <th class="py-3 px-4 text-left">Nombre</th>
+          <th class="py-3 px-4 text-left">Usuario</th>
+          <th class="py-3 px-4 text-left">Email</th>
+          <th class="py-3 px-4 text-left">Ciudad</th>
+          <th class="py-3 px-4 text-left">Empresa</th>
+        </tr>
+        </thead>
+
+        <!-- BODY -->
+        <tbody>
+
+          @for (user of (users$ | async); track user.id) {
+            <tr
+              (click)="goToDetail(user)"
+              class="border-b hover:bg-gray-50 transition cursor-pointer"
+            >
+              <td class="py-3 px-4 font-medium text-gray-700">
+                {{ user.id }}
+              </td>
+
+              <td class="py-3 px-4">
+                {{ user.name }}
+              </td>
+
+              <td class="py-3 px-4 text-gray-500">
+                {{ user.username }}
+              </td>
+
+              <td class="py-3 px-4">
+                {{ user.email }}
+              </td>
+
+              <td class="py-3 px-4">
+                {{ user.address.city }}
+              </td>
+
+              <td class="py-3 px-4">
+                {{ user.company.name }}
+              </td>
+            </tr>
+          }
+
+        </tbody>
+
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL -->
+@if (showModal) {
+  <div class="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
+
+    <div
+      class="bg-white rounded-xl shadow-xl w-full max-w-xl p-6 relative animate-scale-in"
+    >
+
+      <!-- CLOSE -->
+      <button
+        (click)="closeModal()"
+        class="absolute top-3 right-3 text-gray-400 hover:text-gray-700 text-lg"
+      >
+        ✕
+      </button>
+
+      <!-- FORM -->
+      <user-form (userCreated)="addUser($event)"></user-form>
+
+    </div>
+  </div>
+}
